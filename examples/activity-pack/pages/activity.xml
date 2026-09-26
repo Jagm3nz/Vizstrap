@@ -1,0 +1,20 @@
+<!--
+  The Activity tab. Everything on it is Vizstrap's activity widgets; the package only decides what to show and in
+  which order. A toggle at the bottom hides the chart, to show how switches work.
+  Attributes ending in ".pl" are the Polish text; add ".de", ".fr"… the same way.
+-->
+<VizstrapPage Title="Activity" Title.pl="Aktywność" Icon="Timer24"
+              Description="How long you played which game, from Roblox's logs. Kept only on this computer."
+              Description.pl="Ile grasz w które gry, na podstawie logów Robloxa. Zapisywane tylko na tym komputerze.">
+
+  <PlaytimePeriod />
+  <PlaytimeSummary />
+  <PlaytimeChart VisibleWhen="chart" />
+  <PlaytimeGames />
+
+  <Section Title="Options" Title.pl="Opcje" />
+  <Toggle Id="chart" Default="true"
+          Title="Show the last 7 days" Title.pl="Pokazuj ostatnie 7 dni"
+          Description="The chart above the games." Description.pl="Wykres nad listą gier." />
+  <PlaytimeClear />
+</VizstrapPage>

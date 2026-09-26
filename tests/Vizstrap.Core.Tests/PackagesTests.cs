@@ -57,7 +57,7 @@ public sealed class PackageStoreTests : IDisposable
         var installed = _store.Install(packed);
 
         Assert.Equal("your-name.my-mod", installed.Id);
-        Assert.Equal(["effects", "plugin"], installed.Contents());
+        Assert.Equal(["effects", "pages", "plugin"], installed.Contents());
         var effect = Assert.Single(installed.Effects);
         Assert.Equal("your-name.my-mod/scanlines", effect.Id);
         Assert.Equal("Scanlines", effect.Name);

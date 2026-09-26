@@ -1,0 +1,50 @@
+<UserControl x:Class="Vizstrap.Views.Widgets.PlaytimeSummaryWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:l="clr-namespace:Vizstrap.Localization"
+             xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:PlaytimeViewModel}">
+    <!-- activity widget: the period's total, sessions and most played game -->
+    <UserControl.Resources>
+    <Style x:Key="StatValue" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource NeonTextBrush}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        <Setter Property="Margin" Value="0,4,0,0" />
+    </Style>
+    </UserControl.Resources>
+
+    <!-- the period's sums -->
+    <Grid Margin="0,0,0,8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Border Background="{DynamicResource NeonSurfaceBrush}" BorderBrush="{DynamicResource NeonBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16,12">
+            <StackPanel>
+                <TextBlock Text="{x:Static l:Strings.Playtime_Total}" Style="{StaticResource CardDescription}" />
+                <TextBlock Text="{Binding TotalText}" Style="{StaticResource StatValue}" />
+            </StackPanel>
+        </Border>
+        <Border Grid.Column="2" Background="{DynamicResource NeonSurfaceBrush}" BorderBrush="{DynamicResource NeonBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16,12">
+            <StackPanel>
+                <TextBlock Text="{x:Static l:Strings.Playtime_Sessions}" Style="{StaticResource CardDescription}" />
+                <TextBlock Text="{Binding SessionsText}" Style="{StaticResource StatValue}" />
+            </StackPanel>
+        </Border>
+        <Border Grid.Column="4" Background="{DynamicResource NeonSurfaceBrush}" BorderBrush="{DynamicResource NeonBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16,12">
+            <StackPanel>
+                <TextBlock Text="{x:Static l:Strings.Playtime_TopGame}" Style="{StaticResource CardDescription}" />
+                <TextBlock Text="{Binding TopGameText}" Style="{StaticResource StatValue}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

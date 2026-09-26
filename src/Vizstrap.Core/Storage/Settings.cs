@@ -37,6 +37,9 @@ public sealed class Settings
     /// <summary>Ids of the mod packages switched on (see Packages.PackageStore).</summary>
     public List<string> EnabledPackages { get; set; } = [];
 
+    /// <summary>What the player set on packages' tabs: package id → input id → value (see Packages.PackagePages).</summary>
+    public Dictionary<string, Dictionary<string, string>> PackageValues { get; set; } = [];
+
     /// <summary>The XML theme (folder name under CustomThemes) used by the "XmlTheme" style.</summary>
     public string? XmlTheme { get; set; }
 

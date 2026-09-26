@@ -6,24 +6,30 @@ using Vizstrap.Core.Activity;
 using Vizstrap.Core.Effects;
 using Vizstrap.Core.Logging;
 using Vizstrap.Core.Packages;
+using Vizstrap.Core.Storage;
 
 namespace Vizstrap.Integrations;
 
 /// <summary>
 /// Mod packages' programs (any language), started with Roblox and stopped with it. Each gets events as
 /// JSON lines on stdin and sends commands as JSON lines on stdout (the protocol is in the package
-/// template's guide, Packages.TemplateTexts). Commands are handled on the UI thread.
+/// template's guide, Packages.TemplateTexts). Commands are handled on the UI thread. What the player set on the
+/// package's tabs comes with "started", and again as "settings" when it's changed while playing.
 /// </summary>
 internal sealed class PluginHost : IDisposable
 {
     private const string LogSource = nameof(PluginHost);
 
     private static readonly TimeSpan StopTimeout = TimeSpan.FromSeconds(3);
+    private static readonly TimeSpan SettingsCheck = TimeSpan.FromSeconds(2);
     private static readonly JsonSerializerOptions Json = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
     private readonly List<(InstalledPackage Package, Process Process)> _running = [];
     private readonly Action<string, string> _notify;
     private readonly System.Windows.Threading.Dispatcher _dispatcher = System.Windows.Threading.Dispatcher.CurrentDispatcher;
+    private readonly Dictionary<string, string> _sentSettings = [];
+    private System.Windows.Threading.DispatcherTimer? _settingsTimer;
+    private DateTime _settingsStamp;
 
     private PluginHost(Action<string, string> notify) => _notify = notify;
 
@@ -37,9 +43,56 @@ internal sealed class PluginHost : IDisposable
         foreach (var package in packages.Where(package => package.HasPlugin))
             host.StartOne(package);
 
-        host.Send(new { Event = "started", Vizstrap = App.Version, RobloxProcessId = robloxProcessId });
+        var saved = App.Settings.Value.PackageValues;
+
+        foreach (var (package, process) in host._running)
+        {
+            var values = SettingsOf(package, saved);
+            host._sentSettings[package.Id] = JsonSerializer.Serialize(values, Json);
+            SendTo(package, process, new { Event = "started", Vizstrap = App.Version, RobloxProcessId = robloxProcessId, Settings = values });
+        }
+
+        host.WatchSettings();
         return host;
     }
+
+    /// <summary>A package's settings as its program gets them: its tabs' inputs, the player's values or the defaults.</summary>
+    private static Dictionary<string, object> SettingsOf(InstalledPackage package, IReadOnlyDictionary<string, Dictionary<string, string>> saved) =>
+        PackagePages.Values(package.Pages("en"), saved.GetValueOrDefault(package.Id));
+
+    /// <summary>Settings saved while playing reach the programs whose values changed.</summary>
+    private void WatchSettings()
+    {
+        _settingsStamp = SettingsStamp();
+        _settingsTimer = new System.Windows.Threading.DispatcherTimer { Interval = SettingsCheck };
+        _settingsTimer.Tick += (_, _) =>
+        {
+            var stamp = SettingsStamp();
+
+            if (stamp == _settingsStamp)
+                return;
+
+            _settingsStamp = stamp;
+            var store = new JsonStore<Settings>(App.Paths.SettingsFile);
+            store.Load();
+
+            foreach (var (package, process) in _running)
+            {
+                var values = SettingsOf(package, store.Value.PackageValues);
+                string json = JsonSerializer.Serialize(values, Json);
+
+                if (_sentSettings.GetValueOrDefault(package.Id) == json)
+                    continue;
+
+                _sentSettings[package.Id] = json;
+                SendTo(package, process, new { Event = "settings", Values = values });
+            }
+        };
+        _settingsTimer.Start();
+    }
+
+    private static DateTime SettingsStamp() =>
+        File.Exists(App.Paths.SettingsFile) ? File.GetLastWriteTimeUtc(App.Paths.SettingsFile) : DateTime.MinValue;
 
     public void GameJoined(GameSession session) => Send(new
     {
@@ -56,6 +109,7 @@ internal sealed class PluginHost : IDisposable
     /// <summary>"stopping", then the programs get a moment to finish before they're ended.</summary>
     public void Dispose()
     {
+        _settingsTimer?.Stop();
         Send(new { Event = "stopping" });
         var deadline = DateTime.UtcNow + StopTimeout;
 
@@ -145,19 +199,20 @@ internal sealed class PluginHost : IDisposable
 
     private void Send(object message)
     {
-        string line = JsonSerializer.Serialize(message, Json);
-
         foreach (var (package, process) in _running)
+            SendTo(package, process, message);
+    }
+
+    private static void SendTo(InstalledPackage package, Process process, object message)
+    {
+        try
         {
-            try
-            {
-                if (!process.HasExited)
-                    process.StandardInput.WriteLine(line);
-            }
-            catch (Exception ex) when (ex is IOException or InvalidOperationException)
-            {
-                Log.Warn(LogSource, $"{package.Id}'s plugin stopped listening: {ex.Message}");
-            }
+            if (!process.HasExited)
+                process.StandardInput.WriteLine(JsonSerializer.Serialize(message, Json));
+        }
+        catch (Exception ex) when (ex is IOException or InvalidOperationException)
+        {
+            Log.Warn(LogSource, $"{package.Id}'s plugin stopped listening: {ex.Message}");
         }
     }
 

@@ -164,7 +164,6 @@ internal static class Flows
         "bootstrapper" => typeof(BootstrapperPage),
         "mods" => typeof(ModsPage),
         "shaders" or "effects" => typeof(ShadersPage),
-        "playtime" => typeof(PlaytimePage),
         "engine" => typeof(EngineSettingsPage),
         "fastflags" => typeof(FastFlagEditorPage),
         "appearance" => typeof(AppearancePage),

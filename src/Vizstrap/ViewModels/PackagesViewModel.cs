@@ -52,6 +52,7 @@ public sealed partial class PackageItem(InstalledPackage package, bool enabled, 
         InstalledPackage.FilesFolder => Strings.Packages_ContentsFiles,
         InstalledPackage.EffectsFolder => Strings.Packages_ContentsEffects,
         InstalledPackage.LoadingThemesFolder => Strings.Packages_ContentsThemes,
+        InstalledPackage.PagesFolder => Strings.Packages_ContentsPages,
         _ => Strings.Packages_ContentsPlugin,
     };
 }

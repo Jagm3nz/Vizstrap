@@ -82,6 +82,7 @@ public sealed record InstalledPackage(PackageManifest Manifest, string Directory
     public const string FilesFolder = "files";
     public const string EffectsFolder = "effects";
     public const string LoadingThemesFolder = "loading-themes";
+    public const string PagesFolder = "pages";
 
     public string Id => Manifest.Id;
 
@@ -100,6 +101,34 @@ public sealed record InstalledPackage(PackageManifest Manifest, string Directory
             .Where(folder => File.Exists(Path.Combine(folder, Appearance.XmlThemes.ThemeFile)))
             .Order(StringComparer.OrdinalIgnoreCase)]
         : [];
+
+    /// <summary>The tabs' files (pages/name.xml), alphabetically.</summary>
+    public IReadOnlyList<string> PageFiles => System.IO.Directory.Exists(Path.Combine(Directory, PagesFolder))
+        ? [.. System.IO.Directory.GetFiles(Path.Combine(Directory, PagesFolder), "*.xml").Order(StringComparer.OrdinalIgnoreCase)]
+        : [];
+
+    /// <summary>The tabs this package adds to the settings; a tab that doesn't read is reported and left out.</summary>
+    public IReadOnlyList<PackagePage> Pages(string language, Action<string, string>? onBroken = null)
+    {
+        var pages = new List<PackagePage>();
+
+        foreach (string file in PageFiles)
+        {
+            try
+            {
+                if (new FileInfo(file).Length > 256 * 1024)
+                    throw new InvalidDataException("The file is too big for a tab.");
+
+                pages.Add(PackagePages.Parse(Id, Manifest.Name, Path.GetFileName(file), File.ReadAllText(file), language));
+            }
+            catch (Exception ex) when (ex is InvalidDataException or IOException or UnauthorizedAccessException)
+            {
+                onBroken?.Invoke(Path.GetFileName(file), ex.Message);
+            }
+        }
+
+        return pages;
+    }
 
     /// <summary>The picture effects; an effect without its .json gets no sliders.</summary>
     public IReadOnlyList<CustomEffect> Effects
@@ -136,6 +165,8 @@ public sealed record InstalledPackage(PackageManifest Manifest, string Directory
             contents.Add(EffectsFolder);
         if (LoadingThemes.Count > 0)
             contents.Add(LoadingThemesFolder);
+        if (PageFiles.Count > 0)
+            contents.Add(PagesFolder);
         if (HasPlugin)
             contents.Add("plugin");
 

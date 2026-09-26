@@ -1,0 +1,50 @@
+<UserControl x:Class="Vizstrap.Views.Widgets.PlaytimeChartWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:l="clr-namespace:Vizstrap.Localization"
+             xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:PlaytimeViewModel}">
+    <!-- activity widget: the last 7 days, one bar a day; the busiest day fills the chart -->
+    <Border Background="{DynamicResource NeonSurfaceBrush}" BorderBrush="{DynamicResource NeonBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16,12" Margin="0,0,0,8">
+        <StackPanel>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding ChartMaxText}" Style="{StaticResource CardDescription}" />
+                <TextBlock Text="{x:Static l:Strings.Playtime_LastDays}" Style="{StaticResource CardTitle}" />
+            </DockPanel>
+            <Grid Margin="0,10,0,0">
+                <!-- the busiest day's line and the baseline, faint -->
+                <Border Height="1" VerticalAlignment="Top" Background="{DynamicResource NeonBorderBrush}" Margin="0,0,0,0" />
+                <Border Height="1" VerticalAlignment="Top" Background="{DynamicResource NeonBorderBrush}" Margin="0,120,0,0" />
+                <ItemsControl ItemsSource="{Binding Days}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="1" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type vm:PlaytimeDay}">
+                            <StackPanel Background="Transparent" ToolTip="{Binding Tooltip}">
+                                <Grid Height="120">
+                                    <Border Width="28" Height="{Binding BarHeight}" VerticalAlignment="Bottom" CornerRadius="4,4,0,0"
+                                            Background="{DynamicResource NeonAccentBrush}" />
+                                </Grid>
+                                <TextBlock x:Name="DayLabel" Text="{Binding Label}" HorizontalAlignment="Center" Margin="0,6,0,0"
+                                           Foreground="{DynamicResource NeonTextSecondaryBrush}" />
+                            </StackPanel>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                                    <Setter TargetName="DayLabel" Property="Foreground" Value="{DynamicResource NeonTextBrush}" />
+                                    <Setter TargetName="DayLabel" Property="FontWeight" Value="SemiBold" />
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

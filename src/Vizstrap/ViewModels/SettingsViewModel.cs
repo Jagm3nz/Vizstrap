@@ -191,6 +191,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         Mods.PropertyChanged += (_, _) => StatusMessage = null;
         Effects.PropertyChanged += (_, _) => StatusMessage = null;
         Packages.PropertyChanged += (_, _) => StatusMessage = null;
+        PackagePages.PropertyChanged += (_, _) => StatusMessage = null;
         Engine.PropertyChanged += (_, _) => StatusMessage = null;
     }
 
@@ -213,8 +214,11 @@ public sealed partial class SettingsViewModel : ObservableObject
     /// <summary>Mod packages on the "Mods" page; which ones are on is saved with everything else.</summary>
     public PackagesViewModel Packages { get; } = new();
 
-    /// <summary>The "Playtime" page: only shows, nothing to save.</summary>
+    /// <summary>The activity widgets packages put on their tabs: only shows, nothing to save.</summary>
     public PlaytimeViewModel Playtime { get; } = new();
+
+    /// <summary>Tabs from switched-on packages; what's set on them is saved with everything else.</summary>
+    public PackagePagesViewModel PackagePages { get; } = new();
 
     /// <summary>The "Engine settings" page and Fast Flag editor, saved together with everything else.</summary>
     public EngineSettingsViewModel Engine { get; } = new();
@@ -255,6 +259,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         Mods.IsDirty ||
         Effects.IsDirty ||
         Packages.IsDirty ||
+        PackagePages.IsDirty ||
         Engine.IsDirty;
 
     public bool UninstallRequested { get; private set; }
@@ -324,6 +329,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         LoadingThemes.Save();
         Effects.Save();
         Packages.Save();
+        PackagePages.Save();
         Engine.Save();
         App.Settings.Save();
 

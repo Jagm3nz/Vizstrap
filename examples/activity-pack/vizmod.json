@@ -1,0 +1,7 @@
+{
+  "id": "vizstrap.activity",
+  "name": "Activity",
+  "author": "Vizstrap",
+  "version": "1.0.0",
+  "description": "An Activity tab: how long you played which game today, this week and in all, with a 7-day chart."
+}

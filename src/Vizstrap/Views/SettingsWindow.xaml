@@ -61,9 +61,6 @@
                     <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Shortcuts_Title}"
                                            Icon="{ui:SymbolIcon Apps24}"
                                            TargetPageType="{x:Type pages:ShortcutsPage}" />
-                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Playtime_Title}"
-                                           Icon="{ui:SymbolIcon Timer24}"
-                                           TargetPageType="{x:Type pages:PlaytimePage}" />
                 </ui:NavigationView.MenuItems>
                 <ui:NavigationView.FooterMenuItems>
                     <ui:NavigationViewItem Content="Vizstrap"

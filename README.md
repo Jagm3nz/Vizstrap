@@ -29,7 +29,8 @@ Everything you'd expect from a Bloxstrap-style launcher - and a lot more on top.
 | 🎨 **Loading windows** | 9 classic styles, a simple theme editor and **Bloxstrap-compatible XML themes** - 4 of them built in. |
 | 🧩 **Mods** | Bloxstrap's mods folder, one-click presets (cursors, sounds, emoji, fonts) and shareable **`.vzmod` mod packages**. |
 | 🎮 **Discord Rich Presence** | The game you're in, its creator, time played, an optional **Join** button - and "Powered by Vizstrap". |
-| ⏱️ **Playtime** | How long you played which game: **today, this week and all time**, with a 7-day chart. |
+| 🗂️ **Package tabs** | Packages add **their own tabs** to the settings - with switches, sliders, lists and text fields. |
+| 📊 **Activity** | How long you played which game: **today, this week and all time**, with a 7-day chart - the free **Activity** package. |
 | ⚙️ **Engine settings** | Fast Flag presets and an editor that knows which flags Roblox still accepts. |
 | 👥 **Several Robloxes** | Open more than one Roblox at the same time, for example for a second account. |
 | 🖱️ **Tray menu** | Invite link to your server, server location, game history with **Rejoin**, close Roblox. |
@@ -41,11 +42,11 @@ Everything you'd expect from a Bloxstrap-style launcher - and a lot more on top.
 <table>
   <tr>
     <td width="50%"><img src="assets/screenshots/settings-shaders.png" alt="Shaders"></td>
-    <td width="50%"><img src="assets/screenshots/settings-playtime.png" alt="Playtime"></td>
+    <td width="50%"><img src="assets/screenshots/tab-activity.png" alt="Activity"></td>
   </tr>
   <tr>
     <td align="center"><b>🌈 Shaders</b> - approximate ray tracing</td>
-    <td align="center"><b>⏱️ Playtime</b> - today, this week, all time</td>
+    <td align="center"><b>📊 Activity</b> - a tab from the Activity package</td>
   </tr>
   <tr>
     <td width="50%"><img src="assets/screenshots/settings-mods.png" alt="Mods"></td>
@@ -151,13 +152,30 @@ A mod package is one file you can share - install it with **Mods → Mod package
 
 | Inside a package | What it adds |
 |---|---|
+| 🗂️ **Tabs** | Its own tabs in the settings: switches, sliders, lists, text fields, links - and Vizstrap's activity views |
 | 📁 **Game files** | Replaced Roblox files (cursors, sounds, textures…) |
 | 🌈 **Shaders** | Your own picture effects with sliders, on the Shaders page |
 | 🎨 **Loading themes** | Bloxstrap-format loading windows |
-| 🔌 **A program** | Starts with Roblox and gets told when you join or leave a game - it asks before running |
+| 🔌 **A program** | Starts with Roblox, gets what the player set on the package's tabs and is told when they join or leave a game - it asks before running |
 
-**Make your own** creates a starter folder with a guide and examples, and **Pack a folder** turns it into a `.vzmod`.
-The release also has an example: **Synthwave Pack** - a neon cursor, 3 shaders (Synthwave, Toon outlines, Retro TV), a sunset loading theme and "Now playing" notifications.
+<p align="center"><img src="assets/screenshots/tab-template.png" width="720" alt="A package's tab"></p>
+<p align="center"><sub>A package's own tab - this one comes with <b>Make your own</b></sub></p>
+
+**Make your own** creates a starter folder with a guide and an example of everything, and **Pack a folder** turns it into a `.vzmod`.
+
+The release has two packages to try:
+
+| Package | What's inside |
+|---|---|
+| 📊 **Activity** | The **Activity** tab: time per game today, this week and all time, a 7-day chart, **Play** buttons |
+| 🌆 **Synthwave Pack** | A neon cursor, 3 shaders (Synthwave, Toon outlines, Retro TV), a sunset loading theme and "Now playing" notifications |
+
+## 📚 Guides
+
+| Guide | What you'll learn |
+|---|---|
+| 📦 [**Making a package**](docs/making-a-package.md) | Tabs with switches, sliders and lists · translations · programs in any language · loading themes · game files · sharing |
+| 🌈 [**Making shaders**](docs/making-shaders.md) | The `Effect` function · sliders · 8 ready examples from a tint to outlines · depth · tips |
 
 ## 🎮 Integrations
 
@@ -166,7 +184,7 @@ The release also has an example: **Synthwave Pack** - a neon cursor, 3 shaders (
 | 💬 **Discord Rich Presence** | Game, creator, time, game icon; optionally your Roblox account and a **Join** button; supports BloxstrapRPC |
 | 🌍 **Server location** | A notification with where the game server is |
 | 📜 **Game history** | The games of this session in the tray menu, with **Rejoin** |
-| ⏱️ **Playtime** | Time per game from Roblox's logs, kept only on your computer |
+| 📊 **Activity** | Time per game from Roblox's logs, kept only on your computer - shown by the Activity package |
 | 🔁 **Background updates** | New Roblox versions download while you play, so launches don't wait |
 | 🚪 **No Roblox app** | Optionally close Roblox when you leave a game instead of returning to its app |
 | ▶️ **Your programs** | Start your own programs together with Roblox |
@@ -205,7 +223,7 @@ The overlay hides itself from screen capture on purpose - otherwise it would cap
 Everything is in the folder you picked during installation. Uninstall from **Settings → Vizstrap → Uninstall** or from Windows' **Apps and features**.
 </details>
 
-## 🧑‍💻 Source code
+## 💻 Source code
 
 The source is here to read and learn from:
 
@@ -214,7 +232,8 @@ The source is here to read and learn from:
 | 📂 [`src`](src) | Vizstrap itself - the launcher, the windows and the shaders |
 | 🧪 [`tests`](tests) | The automated tests |
 | 🛠️ [`tools`](tools) | The texts of the interface in all 8 languages |
-| 🌆 [`examples/synthwave-pack`](examples/synthwave-pack) | The example mod package - a good start for your own |
+| 🌆 [`examples`](examples) | The Activity and Synthwave packages - a good start for your own |
+| 📚 [`docs`](docs) | The guides |
 
 > [!IMPORTANT]
 > Building Vizstrap from this repository isn't supported: the project files and assets aren't included.

@@ -38,7 +38,37 @@ internal static class TemplateTexts
           every launch while the package is on; the player's own Modifications win over packages.
         - `effects\` — picture effects in HLSL, drawn after Vizstrap's own (see below).
         - `loading-themes\` — loading window themes in Bloxstrap's XML format, one folder each with a Theme.xml.
+        - `pages\` — tabs your package adds to Vizstrap's settings, one XML file each (see "Tabs").
         - `plugin\` — your program (any language), see "Plugins".
+
+        ## Tabs
+
+        `pages\name.xml` is a tab in Vizstrap's settings, shown while the package is on. Stack elements in it
+        like the cards on Vizstrap's own pages:
+
+        ```xml
+        <VizstrapPage Title="My mod" Title.pl="Mój mod" Icon="Sparkle24" Description="What this tab is for.">
+          <Section Title="Options" />
+          <Toggle Id="greet" Title="Say hello when I join a game" Default="true" />
+          <TextBox Id="greeting" Title="Greeting" Default="Have fun!" VisibleWhen="greet" />
+          <Slider Id="volume" Title="Volume" Min="0" Max="100" Step="5" Default="50" />
+          <Choice Id="style" Title="Style" Default="neon">
+            <Option Value="neon" Title="Neon" />
+            <Option Value="retro" Title="Retro" />
+          </Choice>
+          <Text>Any text you like.</Text>
+          <Link Title="Website" Url="https://example.com" />
+        </VizstrapPage>
+        ```
+
+        - What the player sets is saved per package and sent to your program (see "Plugins").
+        - `VisibleWhen="id"` shows an element only while that toggle is on (`"!id"`: while it's off).
+        - Any text attribute can be translated: `Title.pl`, `Description.de`… Vizstrap picks the player's language.
+        - `Icon` is a Fluent icon name like `Timer24`, `Sparkle24`, `Games24`.
+        - Widgets put Vizstrap's own views on your tab: `PlaytimePeriod`, `PlaytimeSummary`, `PlaytimeChart`,
+          `PlaytimeGames`, `PlaytimeClear` (the Activity package is made of them).
+        - `pages\my-tab.xml` in this template has every element. The full guide:
+          https://github.com/Jagm3nz/Vizstrap/blob/main/docs/making-a-package.md
 
         ## Picture effects (HLSL)
 
@@ -71,11 +101,15 @@ internal static class TemplateTexts
         gets one JSON object per line on **stdin**:
 
         ```
-        {"event":"started","vizstrap":"1.3.0","robloxProcessId":1234}
+        {"event":"started","vizstrap":"1.0.0","robloxProcessId":1234,"settings":{"greet":true,"greeting":"Have fun!"}}
         {"event":"gameJoined","placeId":1818,"universeId":13058,"jobId":"...","serverType":"Public","userId":1}
+        {"event":"settings","values":{"greet":false,"greeting":"Have fun!"}}
         {"event":"gameLeft"}
         {"event":"stopping"}
         ```
+
+        `settings` holds what the player set on your tabs (toggles are true/false, sliders numbers, the rest
+        text); "settings" comes again whenever the player saves a change while playing.
 
         After "stopping" (Roblox closed) the program has 3 seconds to exit. Each line it writes to
         **stdout** is a command:
@@ -111,35 +145,76 @@ internal static class TemplateTexts
         """;
 
     public const string PowerShellPlugin = """
-        # A Vizstrap plugin: a notification when you join a game.
+        # A Vizstrap plugin: a greeting when you join a game, set on the package's tab (pages\my-tab.xml).
         # Vizstrap sends one JSON object per line on stdin; each line written to stdout is a command.
+        # Vizstrap talks UTF-8 both ways (Windows PowerShell's console default isn't)
+        [Console]::InputEncoding = New-Object System.Text.UTF8Encoding $false
+        [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false
+        $settings = $null
+
         while ($null -ne ($line = [Console]::In.ReadLine())) {
             $message = $line | ConvertFrom-Json
 
-            if ($message.event -eq 'gameJoined') {
-                $command = @{ command = 'notify'; title = 'My mod'; text = "Joined place $($message.placeId)" } | ConvertTo-Json -Compress
-                [Console]::Out.WriteLine($command)
-                [Console]::Out.Flush()
-            }
-            elseif ($message.event -eq 'stopping') {
-                exit
+            switch ($message.event) {
+                'started' { $settings = $message.settings }
+                'settings' { $settings = $message.values }
+                'gameJoined' {
+                    if ($settings.greet) {
+                        $command = @{ command = 'notify'; title = 'My mod'; text = $settings.greeting } | ConvertTo-Json -Compress
+                        [Console]::Out.WriteLine($command)
+                        [Console]::Out.Flush()
+                    }
+                }
+                'stopping' { exit }
             }
         }
         """;
 
+    /// <summary>The template's tab, with every element a tab can have.</summary>
+    public const string MyTabPage = """
+        <!-- A tab in Vizstrap's settings, shown while this package is on. Every element a tab can have is here. -->
+        <VizstrapPage Title="My mod" Icon="Sparkle24" Description="Settings for my mod. Change this text in pages\my-tab.xml.">
+
+          <Section Title="Greeting" />
+          <Toggle Id="greet" Default="true"
+                  Title="Say hello when I join a game" Description="The program in plugin\ reads this switch." />
+          <TextBox Id="greeting" Default="Have fun!" MaxLength="100" VisibleWhen="greet"
+                   Title="Greeting" Description="Shown only while the switch above is on." />
+
+          <Section Title="More examples" />
+          <Slider Id="volume" Min="0" Max="100" Step="5" Default="50" Title="Volume" Description="A number from Min to Max." />
+          <Choice Id="style" Default="neon" Title="Style">
+            <Option Value="neon" Title="Neon" />
+            <Option Value="retro" Title="Retro" />
+            <Option Value="classic" Title="Classic" />
+          </Choice>
+          <Text>Plain text, for explaining things.</Text>
+          <Text Muted="true">Muted text, for small notes.</Text>
+          <Link Title="How to make a package" Description="Everything a package can do."
+                Url="https://github.com/Jagm3nz/Vizstrap/blob/main/docs/making-a-package.md" />
+        </VizstrapPage>
+        """;
+
     public const string PythonPlugin = """
-        # A Vizstrap plugin: a notification when you join a game.
+        # A Vizstrap plugin: a greeting when you join a game, set on the package's tab (pages\my-tab.xml).
         # In vizmod.json: "plugin": { "run": "python", "args": ["plugin\\plugin.py"] }
         import json
         import sys
 
+        settings = {}
+
         for line in sys.stdin:
             message = json.loads(line)
+            event = message["event"]
 
-            if message["event"] == "gameJoined":
-                command = {"command": "notify", "title": "My mod", "text": f"Joined place {message['placeId']}"}
+            if event == "started":
+                settings = message.get("settings", {})
+            elif event == "settings":
+                settings = message["values"]
+            elif event == "gameJoined" and settings.get("greet"):
+                command = {"command": "notify", "title": "My mod", "text": settings.get("greeting", "")}
                 print(json.dumps(command), flush=True)
-            elif message["event"] == "stopping":
+            elif event == "stopping":
                 break
         """;
 

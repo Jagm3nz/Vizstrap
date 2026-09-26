@@ -2,7 +2,8 @@
 # Vizstrap sends one JSON object per line on stdin; each line written to stdout is a command (see the package guide).
 # Saved as UTF-8 with a BOM so Windows PowerShell reads the Polish letters right.
 
-# commands go out as UTF-8 without a BOM, as Vizstrap reads them
+# Vizstrap talks UTF-8 both ways, without a BOM (Windows PowerShell's console default isn't UTF-8)
+[Console]::InputEncoding = New-Object System.Text.UTF8Encoding $false
 [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 

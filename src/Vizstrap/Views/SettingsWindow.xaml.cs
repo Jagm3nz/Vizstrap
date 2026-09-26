@@ -4,6 +4,7 @@ using Vizstrap.Localization;
 using Vizstrap.ViewModels;
 using Vizstrap.Views.SettingsPages;
 using Wpf.Ui.Abstractions;
+using Wpf.Ui.Controls;
 
 namespace Vizstrap.Views;
 
@@ -16,11 +17,30 @@ public partial class SettingsWindow : NeonWindow
         _viewModel = viewModel;
         DataContext = viewModel;
         InitializeComponent();
+        AddPackageTabs(viewModel);
 
         Navigation.SetPageProviderService(new PageProvider(viewModel));
         Loaded += (_, _) => Navigation.Navigate(startPage ?? typeof(IntegrationsPage));
 
         viewModel.CloseRequested += (_, _) => Close();
+    }
+
+    /// <summary>Switched-on packages' tabs, after Vizstrap's own (see <see cref="PackagePage"/>).</summary>
+    private void AddPackageTabs(SettingsViewModel viewModel)
+    {
+        for (int slot = 0; slot < viewModel.PackagePages.Pages.Count; slot++)
+        {
+            var page = viewModel.PackagePages.Pages[slot].Page;
+            var symbol = Enum.TryParse<SymbolRegular>(page.Icon, ignoreCase: true, out var parsed) ? parsed : SymbolRegular.PuzzlePiece24;
+
+            Navigation.MenuItems.Add(new NavigationViewItem
+            {
+                Content = page.Title,
+                Icon = new SymbolIcon(symbol),
+                TargetPageType = PackagePage.Slots[slot],
+                ToolTip = string.Format(Strings.Packages_PageFrom, page.PackageName),
+            });
+        }
     }
 
     /// <summary>Opens a page, including ones without their own menu entry (the Fast Flag editor).</summary>

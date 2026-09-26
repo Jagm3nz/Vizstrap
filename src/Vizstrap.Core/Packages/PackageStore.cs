@@ -109,6 +109,7 @@ public sealed class PackageStore(string folder)
         Directory.CreateDirectory(Path.Combine(targetFolder, InstalledPackage.FilesFolder));
         Directory.CreateDirectory(Path.Combine(targetFolder, InstalledPackage.EffectsFolder));
         Directory.CreateDirectory(Path.Combine(targetFolder, InstalledPackage.LoadingThemesFolder));
+        Directory.CreateDirectory(Path.Combine(targetFolder, InstalledPackage.PagesFolder));
         Directory.CreateDirectory(Path.Combine(targetFolder, "plugin"));
 
         var manifest = new PackageManifest("your-name.my-mod", "My mod", "Your name", "1.0.0",
@@ -119,6 +120,7 @@ public sealed class PackageStore(string folder)
         File.WriteAllText(Path.Combine(targetFolder, "README.md"), TemplateTexts.Guide);
         File.WriteAllText(Path.Combine(targetFolder, InstalledPackage.EffectsFolder, "scanlines.hlsl"), TemplateTexts.ScanlinesEffect);
         File.WriteAllText(Path.Combine(targetFolder, InstalledPackage.EffectsFolder, "scanlines.json"), TemplateTexts.ScanlinesDescription);
+        File.WriteAllText(Path.Combine(targetFolder, InstalledPackage.PagesFolder, "my-tab.xml"), TemplateTexts.MyTabPage);
         File.WriteAllText(Path.Combine(targetFolder, "plugin", "plugin.ps1"), TemplateTexts.PowerShellPlugin);
         File.WriteAllText(Path.Combine(targetFolder, "plugin", "plugin.py"), TemplateTexts.PythonPlugin);
         File.WriteAllText(Path.Combine(targetFolder, "plugin", "plugin.cpp"), TemplateTexts.CppPlugin);
