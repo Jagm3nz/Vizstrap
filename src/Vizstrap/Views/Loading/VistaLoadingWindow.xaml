@@ -1,0 +1,41 @@
+<Window x:Class="Vizstrap.Views.Loading.VistaLoadingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:Vizstrap.Localization"
+        xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:LoadingViewModel}"
+        Width="400"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="White"
+        Foreground="Black">
+    <!-- a Windows Vista task dialog: blue main instruction, bar, grey footer with Cancel -->
+    <StackPanel>
+        <Grid Margin="10,14,14,18">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Width="32" Height="32" Margin="0,0,10,0" VerticalAlignment="Top" Source="{Binding IconImage}"
+                   RenderOptions.BitmapScalingMode="HighQuality" />
+
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="{Binding Status}" FontFamily="Segoe UI" FontSize="16" Foreground="#003399"
+                           TextWrapping="Wrap" Margin="0,4,0,0" />
+                <ProgressBar Style="{x:Null}" Height="15" Margin="0,14,0,0" Maximum="1"
+                             Value="{Binding Progress, Mode=OneWay}" IsIndeterminate="{Binding IsIndeterminate}" />
+            </StackPanel>
+        </Grid>
+
+        <Border Background="#F0F0F0" BorderBrush="#DFDFDF" BorderThickness="0,1,0,0" Padding="12,10">
+            <Button Style="{x:Null}" MinWidth="75" Height="23" Padding="10,0" HorizontalAlignment="Right"
+                    FontFamily="Segoe UI" FontSize="12"
+                    Content="{x:Static l:Strings.Common_Cancel}" Command="{Binding CancelCommand}" />
+        </Border>
+    </StackPanel>
+</Window>

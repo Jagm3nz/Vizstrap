@@ -1,0 +1,213 @@
+<Page x:Class="Vizstrap.Views.SettingsPages.ModsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:l="clr-namespace:Vizstrap.Localization"
+      xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+      ScrollViewer.CanContentScroll="False">
+    <!-- mirrors Bloxstrap's Mods page: folder, help, compatibility, presets, custom font -->
+    <Grid Margin="24,20,0,0" DataContext="{Binding Mods}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="0,0,24,16">
+            <TextBlock Text="{x:Static l:Strings.Page_Mods_Title}" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="{x:Static l:Strings.Page_Mods_Description}" Style="{StaticResource PageDescription}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,24,16">
+                <Grid Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ui:CardAction Icon="{ui:SymbolIcon Folder24}" Command="{Binding OpenModsFolderCommand}"
+                                   Style="{StaticResource SettingsAction}" Margin="0">
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_OpenFolder}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_OpenFolderDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardAction>
+
+                    <ui:CardAction Grid.Column="2" Icon="{ui:SymbolIcon BookQuestionMark24}" Command="{Binding OpenHelpCommand}"
+                                   Style="{StaticResource SettingsAction}" Margin="0">
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_Help}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_HelpDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardAction>
+                </Grid>
+
+                <ui:CardAction Icon="{ui:SymbolIcon WindowWrench24}" Command="{Binding OpenCompatibilitySettingsCommand}"
+                               Style="{StaticResource SettingsAction}">
+                    <StackPanel>
+                        <TextBlock Text="{x:Static l:Strings.Mods_Compatibility}" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Static l:Strings.Mods_CompatibilityDescription}" Style="{StaticResource CardDescription}" />
+                    </StackPanel>
+                </ui:CardAction>
+
+                <TextBlock Text="{x:Static l:Strings.Mods_Presets}" Style="{StaticResource SectionTitle}" Margin="0,16,0,10" />
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_Cursor}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_CursorDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Button Content="{x:Static l:Strings.Mods_ChooseFile}" Icon="{ui:SymbolIcon Image24}"
+                                   Command="{Binding ChooseCursorCommand}" Margin="0,0,8,0"
+                                   Visibility="{Binding IsCustomCursor, Converter={StaticResource BoolToVisible}}" />
+                        <ComboBox ItemsSource="{Binding Cursors}" SelectedItem="{Binding SelectedCursor}"
+                                  DisplayMemberPath="Name" Width="220" />
+                    </StackPanel>
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_OldAvatarBackground}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_OldAvatarBackgroundDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding OldAvatarBackground}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_OldSounds}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_OldSoundsDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding OldCharacterSounds}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_DeathSound}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_DeathSoundDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Button Content="{x:Static l:Strings.Mods_ChooseFile}" Icon="{ui:SymbolIcon MusicNote224}"
+                                   Command="{Binding ChooseDeathSoundCommand}" Margin="0,0,8,0"
+                                   Visibility="{Binding IsCustomDeathSound, Converter={StaticResource BoolToVisible}}" />
+                        <ComboBox ItemsSource="{Binding DeathSounds}" SelectedItem="{Binding SelectedDeathSound}"
+                                  DisplayMemberPath="Name" Width="220" />
+                    </StackPanel>
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_Emoji}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_EmojiDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ComboBox ItemsSource="{Binding Emojis}" SelectedItem="{Binding SelectedEmoji}"
+                              DisplayMemberPath="Name" Width="220" />
+                </ui:CardControl>
+
+                <TextBlock Text="{x:Static l:Strings.Mods_Misc}" Style="{StaticResource SectionTitle}" Margin="0,16,0,10" />
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Mods_CustomFont}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Mods_CustomFontDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <Grid>
+                        <ui:Button Content="{x:Static l:Strings.Mods_ChooseFont}" Icon="{ui:SymbolIcon TextFont24}"
+                                   Command="{Binding ChooseFontCommand}"
+                                   Visibility="{Binding HasNoFont, Converter={StaticResource BoolToVisible}}" />
+                        <ui:Button Content="{x:Static l:Strings.Mods_RemoveFont}" Icon="{ui:SymbolIcon Delete24}"
+                                   Command="{Binding RemoveFontCommand}"
+                                   Visibility="{Binding HasFont, Converter={StaticResource BoolToVisible}}" />
+                    </Grid>
+                </ui:CardControl>
+
+                <!-- mod packages: files, picture effects, loading themes and programs made by others (Vizstrap.Core.Packages) -->
+                <StackPanel DataContext="{Binding DataContext.Packages, RelativeSource={RelativeSource AncestorType=Page}}">
+                    <TextBlock Text="{x:Static l:Strings.Mods_Packages}" Style="{StaticResource SectionTitle}" Margin="0,16,0,10" />
+
+                    <ui:CardControl Style="{StaticResource SettingsCard}" Icon="{ui:SymbolIcon BoxArrowUp24}">
+                        <ui:CardControl.Header>
+                            <StackPanel>
+                                <TextBlock Text="{x:Static l:Strings.Packages_Install}" Style="{StaticResource CardTitle}" />
+                                <TextBlock Text="{x:Static l:Strings.Packages_InstallDescription}" Style="{StaticResource CardDescription}" />
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:Button Content="{x:Static l:Strings.Packages_FromFile}" Icon="{ui:SymbolIcon Document24}"
+                                       Command="{Binding InstallFromFileCommand}" Appearance="Primary" Margin="0,0,8,0" MinWidth="100" />
+                            <ui:Button Content="{x:Static l:Strings.Packages_FromFolder}" Icon="{ui:SymbolIcon Folder24}"
+                                       Command="{Binding InstallFromFolderCommand}" MinWidth="100" />
+                        </StackPanel>
+                    </ui:CardControl>
+
+                    <ui:CardControl Style="{StaticResource SettingsCard}" Icon="{ui:SymbolIcon Code24}">
+                        <ui:CardControl.Header>
+                            <StackPanel>
+                                <TextBlock Text="{x:Static l:Strings.Packages_Create}" Style="{StaticResource CardTitle}" />
+                                <TextBlock Text="{x:Static l:Strings.Packages_CreateDescription}" Style="{StaticResource CardDescription}" />
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:Button Content="{x:Static l:Strings.Packages_NewTemplate}" Icon="{ui:SymbolIcon Add24}"
+                                       Command="{Binding NewTemplateCommand}" Margin="0,0,8,0" />
+                            <ui:Button Content="{x:Static l:Strings.Packages_Pack}" Icon="{ui:SymbolIcon Archive24}"
+                                       Command="{Binding PackFolderCommand}" />
+                        </StackPanel>
+                    </ui:CardControl>
+
+                    <ui:CardAction Icon="{ui:SymbolIcon FolderOpen24}" Command="{Binding OpenPackagesFolderCommand}"
+                                   Style="{StaticResource SettingsAction}">
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Packages_OpenFolder}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Packages_OpenFolderDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardAction>
+
+                    <TextBlock Text="{x:Static l:Strings.Packages_Empty}" Style="{StaticResource CardDescription}" Margin="4,4,0,8"
+                               Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisible}}" />
+
+                    <ItemsControl ItemsSource="{Binding Items}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type vm:PackageItem}">
+                                <ui:CardControl Style="{StaticResource SettingsCard}" Icon="{ui:SymbolIcon Box24}">
+                                    <ui:CardControl.Header>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" Style="{StaticResource CardTitle}" />
+                                            <TextBlock Text="{Binding Details}" Style="{StaticResource CardDescription}" />
+                                            <TextBlock Text="{Binding Description}" Style="{StaticResource CardDescription}"
+                                                       Visibility="{Binding Description, Converter={StaticResource NotNullToVisible}}" />
+                                        </StackPanel>
+                                    </ui:CardControl.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ui:Button Icon="{ui:SymbolIcon Delete24}" ToolTip="{x:Static l:Strings.Packages_Remove}"
+                                                   Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                   CommandParameter="{Binding}" Margin="0,0,12,0" VerticalAlignment="Center" />
+                                        <ui:ToggleSwitch IsChecked="{Binding Enabled}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </ui:CardControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

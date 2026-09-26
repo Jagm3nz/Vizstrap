@@ -1,0 +1,65 @@
+<!-- Synthwave Pack's loading window: a sun going down over a neon grid. Bloxstrap's theme format. -->
+<BloxstrapCustomBootstrapper Version="1" Width="560" Height="340" Theme="Dark" IgnoreTitleBarInset="True">
+  <BloxstrapCustomBootstrapper.Background>
+    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#0D0221" Offset="0" />
+      <GradientStop Color="#2A0845" Offset="0.55" />
+      <GradientStop Color="#6A0F6B" Offset="0.62" />
+      <GradientStop Color="#12041F" Offset="0.63" />
+      <GradientStop Color="#0A0214" Offset="1" />
+    </LinearGradientBrush>
+  </BloxstrapCustomBootstrapper.Background>
+
+  <TitleBar Title="" ShowMinimize="False" />
+
+  <!-- the sun: its glow, then the sun itself cut by the horizon -->
+  <Ellipse Width="230" Height="230" Fill="#FF2E97" Opacity="0.35" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0">
+    <Ellipse.Effect>
+      <BlurEffect Radius="60" />
+    </Ellipse.Effect>
+  </Ellipse>
+  <Ellipse Width="170" Height="170" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0">
+    <Ellipse.Fill>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFE66D" Offset="0" />
+        <GradientStop Color="#FF8E3C" Offset="0.45" />
+        <GradientStop Color="#FF2E97" Offset="0.85" />
+      </LinearGradientBrush>
+    </Ellipse.Fill>
+  </Ellipse>
+
+  <!-- stripes across the sun's lower half -->
+  <Rectangle Width="164" Height="5" Fill="#2A0845" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,142,0,0" />
+  <Rectangle Width="150" Height="7" Fill="#2A0845" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,160,0,0" />
+  <Rectangle Width="118" Height="9" Fill="#2A0845" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,180,0,0" />
+
+  <!-- the ground: a solid floor below the horizon with a neon grid -->
+  <Rectangle Height="130" Fill="#12041F" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+  <Line Stretch="None" X1="0" Y1="210" X2="560" Y2="210" Stroke="#FF2E97" StrokeThickness="2" />
+  <Line Stretch="None" X1="0" Y1="224" X2="560" Y2="224" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.8" />
+  <Line Stretch="None" X1="0" Y1="244" X2="560" Y2="244" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.7" />
+  <Line Stretch="None" X1="0" Y1="272" X2="560" Y2="272" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+  <Line Stretch="None" X1="0" Y1="310" X2="560" Y2="310" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.5" />
+  <Line Stretch="None" X1="280" Y1="210" X2="280" Y2="340" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+  <Line Stretch="None" X1="240" Y1="210" X2="150" Y2="340" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+  <Line Stretch="None" X1="320" Y1="210" X2="410" Y2="340" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+  <Line Stretch="None" X1="200" Y1="210" X2="20" Y2="340" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+  <Line Stretch="None" X1="360" Y1="210" X2="540" Y2="340" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+  <Line Stretch="None" X1="160" Y1="210" X2="-110" Y2="340" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+  <Line Stretch="None" X1="400" Y1="210" X2="670" Y2="340" Stroke="#B026FF" StrokeThickness="1.5" Opacity="0.6" />
+
+  <!-- text and progress over the grid -->
+  <TextBlock Text="SYNTHWAVE" FontSize="13" FontWeight="Bold" Foreground="#40F0FF" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,96">
+    <TextBlock.Effect>
+      <DropShadowEffect Color="#40F0FF" BlurRadius="12" ShadowDepth="0" Opacity="0.9" />
+    </TextBlock.Effect>
+  </TextBlock>
+  <TextBlock Name="StatusText" FontSize="18" FontWeight="SemiBold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,68" />
+  <ProgressBar Name="PrimaryProgressBar" Width="300" Height="4" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,54"
+               Foreground="#40F0FF" Background="#3A0F5C" BorderThickness="0">
+    <ProgressBar.Effect>
+      <DropShadowEffect Color="#40F0FF" BlurRadius="14" ShadowDepth="0" Opacity="0.8" />
+    </ProgressBar.Effect>
+  </ProgressBar>
+  <Button Name="CancelButton" Content="{Common.Cancel}" Width="110" Height="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,12" />
+</BloxstrapCustomBootstrapper>

@@ -1,0 +1,194 @@
+<Page x:Class="Vizstrap.Views.SettingsPages.EngineSettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:l="clr-namespace:Vizstrap.Localization"
+      xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+      ScrollViewer.CanContentScroll="False">
+    <!-- mirrors Bloxstrap's "Engine settings": manager switch, rendering presets, reset, flag editor -->
+    <Grid Margin="24,20,0,0" DataContext="{Binding Engine}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="0,0,24,16">
+            <TextBlock Text="{x:Static l:Strings.Page_Engine_Title}" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="{x:Static l:Strings.Page_Engine_Description}" Style="{StaticResource PageDescription}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,24,16">
+                <!-- since Sep 2025 Roblox ignores flags outside its allowlist -->
+                <Border Background="{DynamicResource NeonSurfaceBrush}" BorderBrush="{DynamicResource NeonBorderBrush}"
+                        BorderThickness="1" CornerRadius="8" Padding="16,12" Margin="0,0,0,8">
+                    <DockPanel>
+                        <ui:SymbolIcon DockPanel.Dock="Left" Symbol="ShieldCheckmark24" FontSize="22" Margin="0,2,14,0"
+                                       VerticalAlignment="Top" Foreground="{DynamicResource NeonAccentBrush}" />
+                        <ui:HyperlinkButton DockPanel.Dock="Right" Content="{x:Static l:Strings.Flags_Announcement}"
+                                            Command="{Binding OpenAllowlistAnnouncementCommand}" VerticalAlignment="Center" />
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_AllowlistTitle}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_AllowlistDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_UseManager}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_UseManagerDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding UseFastFlagManager}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}" Icon="{ui:SymbolIcon Gauge24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_Profiles}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_ProfilesDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Button Content="{x:Static l:Strings.Flags_ProfilePerformance}" Icon="{ui:SymbolIcon Rocket24}"
+                                   Command="{Binding ApplyPerformanceProfileCommand}" MinWidth="120" />
+                        <ui:Button Content="{x:Static l:Strings.Flags_ProfileQuality}" Icon="{ui:SymbolIcon Diamond24}"
+                                   Command="{Binding ApplyQualityProfileCommand}" MinWidth="120" Margin="8,0,0,0" />
+                    </StackPanel>
+                </ui:CardControl>
+
+                <TextBlock Text="{x:Static l:Strings.Mods_Presets}" Style="{StaticResource SectionTitle}" Margin="0,16,0,4" />
+                <TextBlock Text="{x:Static l:Strings.Flags_Rendering}" Style="{StaticResource CardTitle}" FontWeight="SemiBold" Margin="0,8,0,10" />
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_ExclusiveFullscreen}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_ExclusiveFullscreenDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding ExclusiveFullscreen}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <TextBlock Text="{x:Static l:Strings.Flags_Msaa}" Style="{StaticResource CardTitle}" />
+                    </ui:CardControl.Header>
+                    <ComboBox ItemsSource="{Binding MsaaModes}" SelectedItem="{Binding SelectedMsaa}" DisplayMemberPath="Name" Width="220" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_DpiScale}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_DpiScaleDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding DisableDpiScale}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <TextBlock Text="{x:Static l:Strings.Flags_TextureQuality}" Style="{StaticResource CardTitle}" />
+                    </ui:CardControl.Header>
+                    <ComboBox ItemsSource="{Binding TextureQualities}" SelectedItem="{Binding SelectedTextureQuality}" DisplayMemberPath="Name" Width="220" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_GraphicsApi}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_GraphicsApiDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ComboBox ItemsSource="{Binding GraphicsApis}" SelectedItem="{Binding SelectedGraphicsApi}" DisplayMemberPath="Name" Width="220" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_QualityLevel}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_QualityLevelDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ComboBox ItemsSource="{Binding QualityLevels}" SelectedItem="{Binding SelectedQualityLevel}" DisplayMemberPath="Name" Width="220" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_GraySky}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_GraySkyDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding GraySky}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_NoGrass}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_NoGrassDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding NoGrass}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_StillGrass}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_StillGrassDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding StillGrass}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_PauseVoxelizer}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_PauseVoxelizerDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding PauseVoxelizer}" />
+                </ui:CardControl>
+
+                <TextBlock Text="{x:Static l:Strings.Flags_Geometry}" Style="{StaticResource CardTitle}" FontWeight="SemiBold" Margin="0,16,0,10" />
+
+                <ui:CardControl Style="{StaticResource SettingsCard}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_GeometryDetail}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_GeometryDetailDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ComboBox ItemsSource="{Binding GeometryDetails}" SelectedItem="{Binding SelectedGeometryDetail}" DisplayMemberPath="Name" Width="220" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}" Margin="0,16,0,8">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Flags_ResetAll}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Flags_ResetAllDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding ResetAll}" />
+                </ui:CardControl>
+
+                <ui:CardAction Icon="{ui:SymbolIcon EditSettings24}" Style="{StaticResource SettingsAction}" Click="OnOpenEditor">
+                    <StackPanel>
+                        <TextBlock Text="{x:Static l:Strings.Flags_Editor}" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Static l:Strings.Flags_EditorDescription}" Style="{StaticResource CardDescription}" />
+                    </StackPanel>
+                </ui:CardAction>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

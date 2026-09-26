@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Neon, dark. Same keys as Palette.Light.xaml; App.ApplyTheme swaps the two. -->
+    <Color x:Key="NeonBackgroundColor">#15122A</Color>
+
+    <SolidColorBrush x:Key="NeonBackgroundBrush" Color="#15122A" />
+    <SolidColorBrush x:Key="NeonSurfaceBrush" Color="#1E1A3A" />
+    <SolidColorBrush x:Key="NeonBorderBrush" Color="#3C3489" />
+    <SolidColorBrush x:Key="NeonTrackBrush" Color="#26215C" />
+    <SolidColorBrush x:Key="NeonAccentBrush" Color="#7F77DD" />
+    <SolidColorBrush x:Key="NeonTextBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="NeonTextSecondaryBrush" Color="#AFA9EC" />
+    <SolidColorBrush x:Key="NeonTextMutedBrush" Color="#CECBF6" />
+
+</ResourceDictionary>

@@ -205,6 +205,21 @@ The overlay hides itself from screen capture on purpose - otherwise it would cap
 Everything is in the folder you picked during installation. Uninstall from **Settings → Vizstrap → Uninstall** or from Windows' **Apps and features**.
 </details>
 
+## 🧑‍💻 Source code
+
+The source is here to read and learn from:
+
+| Folder | What's inside |
+|---|---|
+| 📂 [`src`](src) | Vizstrap itself - the launcher, the windows and the shaders |
+| 🧪 [`tests`](tests) | The automated tests |
+| 🛠️ [`tools`](tools) | The texts of the interface in all 8 languages |
+| 🌆 [`examples/synthwave-pack`](examples/synthwave-pack) | The example mod package - a good start for your own |
+
+> [!IMPORTANT]
+> Building Vizstrap from this repository isn't supported: the project files and assets aren't included.
+> To use Vizstrap, download `Vizstrap.exe` from the [**latest release**](https://github.com/Jagm3nz/Vizstrap/releases/latest).
+
 ## 🐞 Support
 
 Found a bug or have an idea? [Open an issue](https://github.com/Jagm3nz/Vizstrap/issues) - the **Having a problem?** button in Vizstrap's menu opens its logs, attach them if you can.

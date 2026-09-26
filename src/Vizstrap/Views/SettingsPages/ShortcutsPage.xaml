@@ -1,0 +1,52 @@
+<Page x:Class="Vizstrap.Views.SettingsPages.ShortcutsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:l="clr-namespace:Vizstrap.Localization"
+      xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+      ScrollViewer.CanContentScroll="False">
+    <Grid Margin="24,20,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="0,0,24,16">
+            <TextBlock Text="{x:Static l:Strings.Page_Shortcuts_Title}" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="{x:Static l:Strings.Page_Shortcuts_Description}" Style="{StaticResource PageDescription}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,24,16">
+                <ui:InfoBar Message="{x:Static l:Strings.Shortcut_NotInstalled}" Severity="Informational" IsClosable="False"
+                            IsOpen="{Binding CanManageShortcuts, Converter={StaticResource InverseBool}}" Margin="0,0,0,8" />
+
+                <ui:CardControl Style="{StaticResource SettingsCard}" IsEnabled="{Binding CanManageShortcuts}"
+                                Icon="{ui:SymbolIcon Desktop24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Shortcut_Desktop}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Shortcut_DesktopDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding DesktopShortcut}" />
+                </ui:CardControl>
+
+                <ui:CardControl Style="{StaticResource SettingsCard}" IsEnabled="{Binding CanManageShortcuts}"
+                                Icon="{ui:SymbolIcon Apps24}">
+                    <ui:CardControl.Header>
+                        <StackPanel>
+                            <TextBlock Text="{x:Static l:Strings.Shortcut_StartMenu}" Style="{StaticResource CardTitle}" />
+                            <TextBlock Text="{x:Static l:Strings.Shortcut_StartMenuDescription}" Style="{StaticResource CardDescription}" />
+                        </StackPanel>
+                    </ui:CardControl.Header>
+                    <ui:ToggleSwitch IsChecked="{Binding StartMenuShortcut}" />
+                </ui:CardControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

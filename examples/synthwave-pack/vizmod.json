@@ -1,0 +1,11 @@
+{
+  "id": "vizstrap.synthwave",
+  "name": "Synthwave Pack",
+  "author": "Vizstrap",
+  "version": "1.0.0",
+  "description": "Neonowy kursor, 3 shadery (Synthwave, kontury toon, stary telewizor), motyw ładowania z zachodem słońca i powiadomienia z nazwą gry.",
+  "plugin": {
+    "run": "powershell",
+    "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "plugin\\plugin.ps1"]
+  }
+}

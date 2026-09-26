@@ -1,0 +1,55 @@
+<v:NeonWindow x:Class="Vizstrap.Views.MessageWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:v="clr-namespace:Vizstrap.Views"
+                 xmlns:l="clr-namespace:Vizstrap.Localization"
+                 Width="480"
+                 SizeToContent="Height"
+                 ResizeMode="NoResize">
+    <Border BorderBrush="{DynamicResource NeonBorderBrush}" BorderThickness="1">
+        <StackPanel>
+            <ui:TitleBar Title="Vizstrap" ShowMaximize="False" ShowMinimize="False" CanMaximize="False" />
+
+            <Grid Margin="24,4,24,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ui:SymbolIcon x:Name="Glyph" Symbol="Info24" FontSize="32" Margin="0,2,16,0"
+                               VerticalAlignment="Top" Foreground="{DynamicResource NeonAccentBrush}" />
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock x:Name="HeadingText" FontSize="17" FontWeight="SemiBold" TextWrapping="Wrap"
+                               Foreground="{DynamicResource NeonTextBrush}" />
+                    <TextBlock x:Name="MessageText" Margin="0,6,0,0" FontSize="13" TextWrapping="Wrap"
+                               Foreground="{DynamicResource NeonTextMutedBrush}" />
+
+                    <Expander x:Name="DetailsExpander" Header="{x:Static l:Strings.Error_Details}"
+                              Margin="0,14,0,0" Visibility="Collapsed">
+                        <TextBox x:Name="DetailsText" IsReadOnly="True" TextWrapping="NoWrap" MaxHeight="180"
+                                 FontFamily="Cascadia Mono, Consolas" FontSize="11"
+                                 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+                    </Expander>
+                </StackPanel>
+            </Grid>
+
+            <Border Background="{DynamicResource NeonSurfaceBrush}" Padding="24,14">
+                <DockPanel LastChildFill="False">
+                    <StackPanel x:Name="DiagnosticsButtons" DockPanel.Dock="Left" Orientation="Horizontal" Visibility="Collapsed">
+                        <ui:Button x:Name="CopyButton" Content="{x:Static l:Strings.Error_CopyDetails}"
+                                   Icon="{ui:SymbolIcon Copy24}" Appearance="Transparent" Click="OnCopy" />
+                        <ui:Button x:Name="OpenLogButton" Content="{x:Static l:Strings.Error_OpenLog}"
+                                   Icon="{ui:SymbolIcon DocumentText24}" Appearance="Transparent" Margin="4,0,0,0" Click="OnOpenLog" />
+                    </StackPanel>
+
+                    <ui:Button x:Name="PrimaryButton" DockPanel.Dock="Right" MinWidth="96" Appearance="Primary"
+                               IsDefault="True" Click="OnPrimary" />
+                    <ui:Button x:Name="SecondaryButton" DockPanel.Dock="Right" MinWidth="96" Margin="0,0,8,0"
+                               IsCancel="True" Click="OnSecondary" />
+                </DockPanel>
+            </Border>
+        </StackPanel>
+    </Border>
+</v:NeonWindow>

@@ -1,0 +1,99 @@
+<v:NeonWindow x:Class="Vizstrap.Views.SettingsWindow"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+              xmlns:v="clr-namespace:Vizstrap.Views"
+              xmlns:pages="clr-namespace:Vizstrap.Views.SettingsPages"
+              xmlns:l="clr-namespace:Vizstrap.Localization"
+              xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+              mc:Ignorable="d"
+              d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+              Title="{x:Static l:Strings.Settings_WindowTitle}"
+              Width="960"
+              Height="600"
+              MinWidth="760"
+              MinHeight="460">
+    <Border BorderBrush="{DynamicResource NeonBorderBrush}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ui:TitleBar Title="{x:Static l:Strings.Settings_WindowTitle}" Padding="8">
+                <ui:TitleBar.Icon>
+                    <ui:ImageIcon Source="{StaticResource VizstrapLogo}" />
+                </ui:TitleBar.Icon>
+            </ui:TitleBar>
+
+            <ui:NavigationView x:Name="Navigation"
+                               Grid.Row="1"
+                               Margin="12,12,0,0"
+                               PaneDisplayMode="Left"
+                               OpenPaneLength="230"
+                               IsBackButtonVisible="Collapsed"
+                               IsPaneToggleVisible="False"
+                               HeaderVisibility="Collapsed"
+                               FrameMargin="0"
+                               Transition="FadeInWithSlide">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Integrations_Title}"
+                                           Icon="{ui:SymbolIcon PlugConnected24}"
+                                           TargetPageType="{x:Type pages:IntegrationsPage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Bootstrapper_Title}"
+                                           Icon="{ui:SymbolIcon PlaySettings20}"
+                                           TargetPageType="{x:Type pages:BootstrapperPage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Mods_Title}"
+                                           Icon="{ui:SymbolIcon WrenchScrewdriver20}"
+                                           TargetPageType="{x:Type pages:ModsPage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Shaders_Title}"
+                                           Icon="{ui:SymbolIcon Sparkle24}"
+                                           TargetPageType="{x:Type pages:ShadersPage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Engine_Title}"
+                                           Icon="{ui:SymbolIcon Flag24}"
+                                           TargetPageType="{x:Type pages:EngineSettingsPage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Appearance_Title}"
+                                           Icon="{ui:SymbolIcon PaintBrush24}"
+                                           TargetPageType="{x:Type pages:AppearancePage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Shortcuts_Title}"
+                                           Icon="{ui:SymbolIcon Apps24}"
+                                           TargetPageType="{x:Type pages:ShortcutsPage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Page_Playtime_Title}"
+                                           Icon="{ui:SymbolIcon Timer24}"
+                                           TargetPageType="{x:Type pages:PlaytimePage}" />
+                </ui:NavigationView.MenuItems>
+                <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem Content="Vizstrap"
+                                           Icon="{ui:SymbolIcon Settings24}"
+                                           TargetPageType="{x:Type pages:VizstrapPage}" />
+                    <ui:NavigationViewItem Content="{x:Static l:Strings.Settings_About}"
+                                           Icon="{ui:SymbolIcon QuestionCircle24}"
+                                           TargetPageType="{x:Type pages:AboutPage}"
+                                           Margin="0,0,0,12" />
+                </ui:NavigationView.FooterMenuItems>
+            </ui:NavigationView>
+
+            <Border Grid.Row="2" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource NeonBorderBrush}" Padding="16,12">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <ui:Button Content="{x:Static l:Strings.Settings_Save}" Command="{Binding SaveCommand}"
+                                   Appearance="Primary" MinWidth="96" />
+                        <ui:Button Content="{x:Static l:Strings.Common_Close}" Command="{Binding CloseCommand}"
+                                   MinWidth="96" Margin="8,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                Visibility="{Binding StatusMessage, Converter={StaticResource NotNullToVisible}}">
+                        <ui:SymbolIcon Symbol="CheckmarkCircle24" FontSize="18" Margin="0,0,8,0"
+                                       Foreground="{DynamicResource NeonAccentBrush}" />
+                        <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource NeonTextSecondaryBrush}" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</v:NeonWindow>

@@ -1,0 +1,55 @@
+<Page x:Class="Vizstrap.Views.SettingsPages.VizstrapPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:l="clr-namespace:Vizstrap.Localization"
+      xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+      ScrollViewer.CanContentScroll="False">
+    <Grid Margin="24,20,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="0,0,24,16">
+            <TextBlock Text="Vizstrap" Style="{StaticResource PageTitle}" />
+            <TextBlock Text="{x:Static l:Strings.Page_Vizstrap_Description}" Style="{StaticResource PageDescription}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,24,16">
+                <ui:CardAction Icon="{ui:SymbolIcon DocumentBulletList24}" Command="{Binding OpenLogsCommand}" Style="{StaticResource SettingsAction}">
+                    <StackPanel>
+                        <TextBlock Text="{x:Static l:Strings.Settings_OpenLogs}" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Static l:Strings.Settings_OpenLogsDescription}" Style="{StaticResource CardDescription}" />
+                    </StackPanel>
+                </ui:CardAction>
+
+                <ui:CardAction Icon="{ui:SymbolIcon Folder24}" Command="{Binding OpenVizstrapFolderCommand}" Style="{StaticResource SettingsAction}">
+                    <StackPanel>
+                        <TextBlock Text="{x:Static l:Strings.Settings_OpenVizstrapFolder}" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{Binding VizstrapFolder}" Style="{StaticResource CardDescription}" />
+                    </StackPanel>
+                </ui:CardAction>
+
+                <ui:CardAction Icon="{ui:SymbolIcon ArrowSync24}" Command="{Binding ReinstallCommand}" Style="{StaticResource SettingsAction}">
+                    <StackPanel>
+                        <TextBlock Text="{x:Static l:Strings.Settings_ReinstallVizstrap}" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Static l:Strings.Settings_ReinstallVizstrapDescription}" Style="{StaticResource CardDescription}" />
+                    </StackPanel>
+                </ui:CardAction>
+
+                <ui:CardAction Icon="{ui:SymbolIcon Delete24}" Command="{Binding UninstallCommand}" Style="{StaticResource SettingsAction}">
+                    <StackPanel>
+                        <TextBlock Text="{x:Static l:Strings.Settings_Uninstall}" Style="{StaticResource CardTitle}" />
+                        <TextBlock Text="{x:Static l:Strings.Settings_UninstallDescription}" Style="{StaticResource CardDescription}" />
+                    </StackPanel>
+                </ui:CardAction>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

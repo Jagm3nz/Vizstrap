@@ -1,0 +1,59 @@
+<Window x:Class="Vizstrap.Views.Loading.Roblox2014LoadingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:Vizstrap.Localization"
+        xmlns:vm="clr-namespace:Vizstrap.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:LoadingViewModel}"
+        x:Name="Root"
+        Width="520"
+        Height="320"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#B4B4B4">
+
+    <!-- the Roblox bootstrapper of ~2014; positions follow Bloxstrap's ProgressDialog -->
+    <Window.Resources>
+        <Style x:Key="CancelButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Face" CornerRadius="4" BorderThickness="1"
+                                Background="{Binding CancelBackground, ElementName=Root}"
+                                BorderBrush="{Binding CancelBorder, ElementName=Root}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Face" Property="Background" Value="{Binding CancelHover, ElementName=Root}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Face" Property="Opacity" Value="0.5" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="Panel" Margin="1" Background="White">
+        <Canvas>
+            <Image Canvas.Left="211" Canvas.Top="65" Width="92" Height="92" Source="{Binding IconImage}"
+                   RenderOptions.BitmapScalingMode="HighQuality" />
+
+            <TextBlock x:Name="Message" Canvas.Left="28" Canvas.Top="198" Width="460" TextAlignment="Center"
+                       FontFamily="Tahoma" FontSize="15" Text="{Binding Status}" Foreground="Black" />
+
+            <ProgressBar Style="{x:Null}" Canvas.Left="28" Canvas.Top="240" Width="460" Height="20" Maximum="1"
+                         Value="{Binding Progress, Mode=OneWay}" IsIndeterminate="{Binding IsIndeterminate}" />
+
+            <Button x:Name="CancelButton" Style="{StaticResource CancelButton}" Canvas.Left="193" Canvas.Top="263"
+                    Width="130" Height="44" FontFamily="Tahoma" FontSize="16"
+                    Content="{x:Static l:Strings.Common_Cancel}" Command="{Binding CancelCommand}" />
+        </Canvas>
+    </Border>
+</Window>

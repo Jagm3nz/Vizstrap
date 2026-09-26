@@ -1,0 +1,8 @@
+{
+  "name": "Toon outlines",
+  "parameters": [
+    { "name": "Strength", "min": 0, "max": 1, "default": 0.8 },
+    { "name": "Thickness", "min": 0.5, "max": 3, "default": 1.2 },
+    { "name": "Depth edges", "min": 0, "max": 1, "default": 0.7 }
+  ]
+}
