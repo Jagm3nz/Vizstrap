@@ -174,8 +174,13 @@ The release has two packages to try:
 
 | Guide | What you'll learn |
 |---|---|
-| 📦 [**Making a package**](docs/making-a-package.md) | Tabs with switches, sliders and lists · translations · programs in any language · loading themes · game files · sharing |
+| 📦 [**Making a package**](docs/making-a-package.md) | Tabs with switches, sliders and lists · translations · what goes where · sharing a `.vzmod` |
 | 🌈 [**Making shaders**](docs/making-shaders.md) | The `Effect` function · sliders · 8 ready examples from a tint to outlines · depth · tips |
+| 🔌 [**Making programs**](docs/making-programs.md) | A program in any language that starts with Roblox · events and commands · examples in PowerShell, Python and C# |
+| 🎨 [**Making loading themes**](docs/making-loading-themes.md) | Bloxstrap's XML theme format · layout · colours and gradients · effects |
+| 📁 [**Replacing game files**](docs/making-mods.md) | Where Roblox keeps cursors, sounds, emoji and fonts · presets · sharing mods |
+
+All guides in one place: [**docs**](docs).
 
 ## 🎮 Integrations
 
